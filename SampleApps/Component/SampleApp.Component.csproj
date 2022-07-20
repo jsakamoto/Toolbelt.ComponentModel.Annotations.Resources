@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<ProjectReference Include="..\..\Toolbelt.ComponentModel.Annotations.Resources\Toolbelt.ComponentModel.Annotations.Resources.csproj" />-->
+    <PackageReference Include="Toolbelt.ComponentModel.Annotations.Resources.ja" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>

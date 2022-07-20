@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <langCode>ja</langCode>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+    <RootNamespace>Toolbelt.ComponentModel.Annotations.Resources</RootNamespace>
+    <AssemblyName>Toolbelt.ComponentModel.Annotations.Resources</AssemblyName>
+    <PackageId>$(AssemblyName).$(langCode)</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © 2022 J.Sakamoto, Mozilla Public License 2.0</Copyright>
+    <Authors>J.Sakamoto</Authors>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jsakamoto/Toolbelt.ComponentModel.Annotations.Resources/tree/main/Languages/ja/</PackageProjectUrl>
+    <Description>この NuGet パッケージをインストールすると、ASP.NET Core および Blazor アプリに組み込みの [Required] や [StringLength] などの検証属性に対する検証エラーメッセージが、日本語化されて表示されるようになります。</Description>
+    <PackageTags>blazor,dataannotations,localization</PackageTags>
+    <PackageReleaseNotes>(Please write the package release notes in "RELEASE NOTES.txt".)</PackageReleaseNotes>
+    <PackageIcon>nupkg-icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageOutputPath>..\..\_dist\</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\.assets\nupkg-icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include=".\README.md" Visible="false" Pack="true" PackagePath="\" Link="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbelt.ComponentModel.Annotations.Resources\Toolbelt.ComponentModel.Annotations.Resources.csproj" />
+  </ItemGroup>
+
+  <!-- CONFIGURE PACKAGING INTO A NUGET PACKAGE FILE. -->
+  <PropertyGroup>
+    <!-- 1. Suppress including default project output. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <BeforePack>$(BeforePack);IncludeSatelliteAssemblyToPackage;</BeforePack>
+  </PropertyGroup>
+  <Target Name="IncludeSatelliteAssemblyToPackage">
+    <ItemGroup>
+      <!-- 2. Include a resource satellite assembly only. -->
+      <None Include="$(OutDir)$(LangCode)\$(AssemblyName).resources.dll">
+        <Pack>true</Pack>
+        <PackagePath>lib\$(TargetFramework)\$(LangCode)\$(AssemblyName).resources.dll</PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
+    <ReadLinesFromFile File="./RELEASE-NOTES.txt">
+      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <PackageReleaseNotes>@(ReleaseNoteLines, '%0a');v.0.0</PackageReleaseNotes>
+      <PackageReleaseNotes>$([System.Text.RegularExpressions.Regex]::Match($(PackageReleaseNotes), "^(v\.[\d\.]+.+?)v\.[\d\.]+", System.Text.RegularExpressions.RegexOptions.Singleline).Groups[1].Value)</PackageReleaseNotes>
+      <PackageReleaseNotes>$(PackageReleaseNotes)%0a%0aすべての変更履歴を見るには、以下の URL を参照ください。%0a- https://github.com/jsakamoto/Toolbelt.ComponentModel.Annotations.Resources/blob/main/Languages/ja/RELEASE-NOTES.txt</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
+
+</Project>

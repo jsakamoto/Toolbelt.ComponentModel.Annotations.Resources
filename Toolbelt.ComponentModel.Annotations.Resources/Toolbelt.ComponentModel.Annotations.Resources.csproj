@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <LangVersion>10</LangVersion>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © 2022 J.Sakamoto, Mozilla Public License 2.0</Copyright>
+    <Authors>J.Sakamoto</Authors>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jsakamoto/Toolbelt.ComponentModel.Annotations.Resources/</PackageProjectUrl>
+    <Description>Built-in validation error messages for validation attributes such as [Required], [StringLength], etc., on your ASP.NET Core and Blazor apps will be shown localized after installing this NuGet package.</Description>
+    <PackageTags>blazor,dataannotations,localization</PackageTags>
+    <PackageReleaseNotes>(Please write the package release notes in "RELEASE NOTES.txt".)</PackageReleaseNotes>
+    <PackageIcon>nupkg-icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageOutputPath>..\_dist\</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.assets\nupkg-icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\README.md" Visible="false" Pack="true" PackagePath="\" Link="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Toolbelt.SystemResourceManager" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ValidationErrorMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ValidationErrorMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ValidationErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="PreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
+    <ReadLinesFromFile File="../RELEASE-NOTES.txt">
+      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <PackageReleaseNotes>@(ReleaseNoteLines, '%0a');v.0.0</PackageReleaseNotes>
+      <PackageReleaseNotes>$([System.Text.RegularExpressions.Regex]::Match($(PackageReleaseNotes), "^(v\.[\d\.]+.+?)v\.[\d\.]+", System.Text.RegularExpressions.RegexOptions.Singleline).Groups[1].Value)</PackageReleaseNotes>
+      <PackageReleaseNotes>$(PackageReleaseNotes)%0a%0aTo see all the change logs, please visit the following URL.%0a- https://github.com/jsakamoto/Toolbelt.ComponentModel.Annotations.Resources/blob/main/RELEASE-NOTES.txt</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
+
+</Project>

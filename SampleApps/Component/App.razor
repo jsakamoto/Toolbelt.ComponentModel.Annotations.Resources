@@ -1,0 +1,23 @@
+﻿<EditForm Model="_Model">
+    <DataAnnotationsValidator/>
+
+    <!-- Required Field -->
+    <div>
+        <InputText @bind-Value="_Model.RequiredField" id="required-field" />
+        <ValidationMessage For="@(() => _Model.RequiredField )" id="required-field-message" />
+    </div>
+
+    <!-- StringLen Field -->
+    <div>
+        <InputText @bind-Value="_Model.StringLenField" id="required-field" />
+        <ValidationMessage For="@(() => _Model.StringLenField )" id="required-field-message" />
+    </div>
+
+    <ValidationSummary />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private ValidationTestModel _Model = new();
+}
